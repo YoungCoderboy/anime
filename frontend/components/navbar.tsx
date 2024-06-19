@@ -1,24 +1,21 @@
 "use client";
 
 import { useState } from "react";
-import { FaBell, FaRegCircleUser, FaRegUser } from "react-icons/fa6";
+import { FaBell } from "react-icons/fa6";
 import { usePathname } from "next/navigation";
 import { PiUserCirclePlusThin } from "react-icons/pi";
-import { FaShoppingCart } from "react-icons/fa";
+
 import { ImFire } from "react-icons/im";
 import { IoBagHandle } from "react-icons/io5";
+import { NAV_LINKS } from "@/utils/constants";
+import { useSiteContext } from "@/context/siteContext";
 const NavBar = () => {
+  const { handleMenuClick, showUserMenu, handleSidebarClick, showSidebar } =
+    useSiteContext();
   const pathname = usePathname();
-  const [open, setOpen] = useState(false);
-  const [sideBarOpen, setSideBarOpen] = useState(false);
   const [cnt, setCnt] = useState(0);
-  const links = [
-    { name: "Home", href: "/" },
-    { name: "Community", href: "/community" },
-    { name: "Store", href: "/store" },
-    { name: "About", href: "/about" },
-  ];
-  console.log(pathname);
+  const links = NAV_LINKS;
+
   return (
     <nav className="bg-[#070F2B]">
       <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
@@ -27,7 +24,7 @@ const NavBar = () => {
             {/* Mobile menu button*/}
             <button
               type="button"
-              onClick={() => setSideBarOpen(!sideBarOpen)}
+              onClick={() => handleSidebarClick()}
               className="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
               aria-controls="mobile-menu"
               aria-expanded="false"
@@ -76,7 +73,7 @@ const NavBar = () => {
           </div>
           <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
             <div className="flex flex-shrink-0 items-center">
-              <a href="/">
+              <a href="/" title="home">
                 <ImFire className="text-3xl text-red-500" />
               </a>
             </div>
@@ -132,7 +129,7 @@ const NavBar = () => {
               <div>
                 <button
                   type="button"
-                  onClick={() => setOpen(!open)}
+                  onClick={() => handleMenuClick()}
                   className="relative flex rounded-full bg-gray-900 text-white text-sm hover:outline-none hover:ring-2 hover:ring-white hover:ring-offset-2 hover:ring-offset-gray-800"
                   id="user-menu-button"
                   aria-expanded="false"
@@ -153,9 +150,9 @@ const NavBar = () => {
         From: "transform opacity-100 scale-100"
         To: "transform opacity-0 scale-95"
     */}{" "}
-              {open && (
+              {showUserMenu && (
                 <div
-                  onMouseLeave={() => setOpen(false)}
+                  onMouseLeave={() => handleMenuClick()}
                   className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-[#FFE5E5] py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
                   role="menu"
                   aria-orientation="vertical"
@@ -197,7 +194,7 @@ const NavBar = () => {
         </div>
       </div>
       {/* Mobile menu, show/hide based on menu state. */}
-      {sideBarOpen && (
+      {showSidebar && (
         <div className="sm:hidden" id="mobile-menu">
           <div className="space-y-1 px-2 pb-3 pt-2">
             {/* Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" */}
