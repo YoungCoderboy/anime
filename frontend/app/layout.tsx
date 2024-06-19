@@ -24,8 +24,8 @@ export default function RootLayout({
         <div className="flex flex-col h-screen justify-between">
           <NavBar />
           {/* bg-gradient-to-r from-black via-black to-slate-900 */}
-          <div className="bg-black">{children}</div>
-          <TopProducts />
+          <div className="bg-black flex-grow">{children}</div>
+
           <Footer />
         </div>
       </body>

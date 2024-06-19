@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { PiUserCirclePlusThin } from "react-icons/pi";
 import { FaShoppingCart } from "react-icons/fa";
 import { ImFire } from "react-icons/im";
+import { IoBagHandle } from "react-icons/io5";
 const NavBar = () => {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
@@ -105,11 +106,11 @@ const NavBar = () => {
             <div className="p-1 relative">
               <button
                 type="button"
-                className="relative rounded-full bg-gray-900 pr-0 text-gray-200  hover:text-white hover:outline-none hover:ring-2 hover:ring-white hover:ring-offset-2 hover:ring-offset-gray-800"
+                className="relative rounded-full bg-gray-900 pr-0 text-gray-200 "
               >
                 <span className="absolute -inset-1.5" />
                 <span className="sr-only">View Cart</span>
-                <FaShoppingCart className="text-xl" />
+                <IoBagHandle className="text-xl" />
               </button>
               <span className="absolute top-0 right-0 text-xs align-top  size-0.5 pl-1">
                 {cnt}
