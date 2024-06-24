@@ -49,7 +49,7 @@ const Page = () => {
             {
               "translate-x-0": isFilterVisible,
               "-translate-x-96 lg:translate-x-0": !isFilterVisible,
-              "md:translate-x-0": true,
+              "xl:translate-x-0": true,
             }
           )}
         >

@@ -12,6 +12,11 @@ const productSchema = new mongoose.Schema(
       required: [true, "Please provide product name"],
     },
     slug: String,
+    stock: {
+      type: Number,
+      required: [true, "Please provide product quantity"],
+      default: 0,
+    },
     ratingsAverage: {
       type: Number,
       default: 0,

@@ -4,3 +4,5 @@ export const NAV_LINKS = [
   { name: "Store", href: "/store" },
   { name: "About", href: "/about" },
 ];
+
+export const url = "http://localhost:5000/api/v1";

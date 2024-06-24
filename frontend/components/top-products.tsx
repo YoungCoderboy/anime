@@ -5,67 +5,12 @@ import { useDrag } from "react-use-gesture";
 import { FaAnglesLeft, FaAnglesRight } from "react-icons/fa6";
 import { Dancing_Script } from "next/font/google";
 import Link from "next/link";
+import { useProductContext } from "@/context/productContext";
 const font = Dancing_Script({ subsets: ["latin"] });
-const products = [
-  {
-    id: 1,
-    name: "Naruto",
-    image: "/images/ship.png",
-    price: 100,
-  },
-  {
-    id: 2,
-    name: "Zoro",
-    image: "/images/zoro.png",
-    price: 200,
-  },
-  {
-    id: 3,
-    name: "One Piece",
-    image: "/images/onepiece2.png",
-    price: 300,
-  },
-  {
-    id: 1,
-    name: "Naruto",
-    image: "/images/ship.png",
-    price: 100,
-  },
-  {
-    id: 2,
-    name: "Zoro",
-    image: "/images/zoro.png",
-    price: 200,
-  },
-  {
-    id: 3,
-    name: "One Piece",
-    image: "/images/onepiece2.png",
-    price: 300,
-  },
-  {
-    id: 1,
-    name: "Naruto",
-    image: "/images/ship.png",
-    price: 100,
-  },
-  {
-    id: 2,
-    name: "Zoro",
-    image: "/images/zoro.png",
-    price: 200,
-  },
-  {
-    id: 3,
-    name: "One Piece",
-    image: "/images/onepiece2.png",
-    price: 300,
-  },
-];
 
 const TopProducts = () => {
   const scrollContainerRef = useRef(null);
-
+  const { top_products, top_products_loading } = useProductContext();
   const scroll = (scrollOffset: number) => {
     if (scrollContainerRef.current) {
       (scrollContainerRef.current as HTMLDivElement).scrollLeft += scrollOffset;
@@ -114,9 +59,14 @@ const TopProducts = () => {
           ref={scrollContainerRef}
           className="flex flex-row space-x-5 overflow-auto overscroll-x-contain "
         >
-          {products.map((product) => {
-            return <Card key={product.id} product={product} />;
-          })}
+          {top_products_loading ? (
+            <h1>Loading...</h1>
+          ) : (
+            top_products.map((product) => {
+              return <Card key={product.id} product={product} />;
+            })
+            // <h1>{JSON.stringify(top_products)}</h1>
+          )}
         </div>
       </div>
     </div>

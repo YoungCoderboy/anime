@@ -3,6 +3,7 @@ import { useState } from "react";
 import RangeSlider from "./slider";
 import MultiRangeSlider from "./slider";
 import CheckList from "./checkList";
+import { useCardContext } from "@/context/cardContext";
 
 interface Category {
   id: number;
@@ -30,6 +31,7 @@ const data = [
 
 const Filter = () => {
   const [category, setCategory] = useState<Category[]>(data);
+  // const {} = useCardContext()
   return (
     <div className="flex flex-col justify-between space-y-11  w-fit backdrop-blur-sm">
       <div className="rounded-xl">
@@ -66,6 +68,9 @@ const Filter = () => {
             console.log(`min = ${min}, max = ${max}`)
           }
         />
+      </div>
+      <div className="bg-blue-700 p-1 rounded-lg border-2 border-white hover:bg-blue-700 hover:border-blue-500 border-solid">
+        <button className="w-full">GO</button>
       </div>
     </div>
   );

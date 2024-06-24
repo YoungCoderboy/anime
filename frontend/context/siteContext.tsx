@@ -10,7 +10,6 @@ const initialState = {
 interface SiteContextType {
   showUserMenu: boolean;
   handleMenuClick: () => void;
-
   handleSidebarClick: () => void;
   showSidebar: boolean;
 }

@@ -1,17 +1,13 @@
+import { Product_interface } from "@/interface";
 import Image from "next/image";
-interface CardProps {
-  id: number;
-  name: string;
-  price: number;
-  image: string;
-}
-const Card = ({ product }: { product: CardProps }) => {
+
+const Card = ({ product }: { product: Product_interface }) => {
   return (
     <div className="border-2 border-white border-solid rounded-lg p-6 bg-slate-950 flex flex-col justify-between items-center min-w-72 min-h-96 space-y-6">
       <div className="border-white border-solid border-2 max-w-48 min-h-72 p-5 items-center flex rounded-xl bg-gray-900">
         <Image
           src={"/images/onepiece.png"}
-          alt="apple"
+          alt={product.name}
           width="200"
           height="200"
           className="max-h-56"
