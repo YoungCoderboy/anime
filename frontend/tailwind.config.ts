@@ -18,6 +18,7 @@ const config: Config = {
         discount: "#dc2626",
         stock: "#4B9D71",
         outStock: "#DC2626",
+        incdec: "#164e63",
       },
     },
   },

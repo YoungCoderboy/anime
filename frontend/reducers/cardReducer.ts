@@ -1,3 +1,4 @@
+import { CartInterface, Product_interface } from "@/interface";
 import {
   ADD_TO_CART,
   REMOVE_FROM_CART,
@@ -7,11 +8,6 @@ import {
   CARTLOAD,
 } from "../utils/actions";
 
-interface CartInterface {
-  id: string;
-  quantity: number;
-  product: object;
-}
 interface CardState {
   cart: [] | CartInterface[];
   total_items: number;
@@ -48,6 +44,7 @@ const card_reducer = (state: CardState, action: Action) => {
           name: product.name,
           price: product.price,
           image: product.imageCover,
+          discount: product.priceDiscount,
           quantity,
           max: product.stock,
         };
@@ -88,9 +85,9 @@ const card_reducer = (state: CardState, action: Action) => {
     case COUNT_CART_TOTALS:
       const { total_items, total_amount } = state.cart.reduce(
         (total: any, cartItem: any) => {
-          const { quantity, price } = cartItem;
+          const { quantity, price, discount } = cartItem;
           total.total_items += quantity;
-          total.total_amount += price * quantity;
+          total.total_amount += (price - discount) * quantity;
           return total;
         },
         {

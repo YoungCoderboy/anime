@@ -12,33 +12,14 @@ import {
 } from "../utils/actions";
 
 import card_reducer from "@/reducers/cardReducer";
-interface CartInterface {
-  id: string;
-  quantity: number;
-  product: object;
-}
-const initialState: {
-  cart: [] | CartInterface[];
-  total_items: number;
-  total_amount: number;
-  shipping_fee: number;
-} = {
-  cart: [],
+import { CardContextType, CartInterface, Product_interface } from "@/interface";
+
+const initialState = {
+  cart: [] as CartInterface[],
   total_items: 0,
   total_amount: 0,
   shipping_fee: 50000, // fee is in paisa
 };
-
-interface CardContextType {
-  cart: [] | CartInterface[];
-  total_items: number;
-  total_amount: number;
-  shipping_fee: number;
-  addToCart: (id: string, product: object) => void;
-  removeFromCart: (id: string) => void;
-  toggleAmount: (id: string, value: string) => void;
-  clearCart: () => void;
-}
 
 const CardContext = createContext({} as CardContextType);
 

@@ -47,3 +47,24 @@ export interface ProductState_interface {
   single_product_error: boolean;
   single_product: Product_interface;
 }
+
+export interface CartInterface {
+  id: string;
+  name: string;
+  image: string;
+  price: number;
+  discount: number;
+  quantity: number;
+  max: number;
+}
+
+export interface CardContextType {
+  cart: [] | CartInterface[];
+  total_items: number;
+  total_amount: number;
+  shipping_fee: number;
+  addToCart: (id: string, product: object) => void;
+  removeFromCart: (id: string) => void;
+  toggleAmount: (id: string, value: string) => void;
+  clearCart: () => void;
+}
