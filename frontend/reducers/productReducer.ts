@@ -1,4 +1,5 @@
-import { Product_interface } from "@/interface";
+import { Action_interface } from "@/context/productContext";
+import { Product_interface, ProductState_interface } from "@/interface";
 import {
   GET_PRODUCTS_BEGIN,
   GET_PRODUCTS_ERROR,
@@ -11,24 +12,10 @@ import {
   GET_TOP_PRODUCTS_ERROR,
 } from "@/utils/actions";
 
-interface Action {
-  type: string;
-  payload?: any;
-}
-
-interface ProductState {
-  top_products: [] | Product_interface[];
-  products: [] | Product_interface[];
-  top_products_loading: boolean;
-  top_products_error: boolean;
-  products_loading: boolean;
-  products_error: boolean;
-  single_product_loading: boolean;
-  single_product_error: boolean;
-  single_product: object;
-}
-
-const product_reducer = (state: ProductState, action: Action) => {
+const product_reducer = (
+  state: ProductState_interface,
+  action: Action_interface
+) => {
   switch (action.type) {
     case GET_TOP_PRODUCTS_BEGIN:
       return { ...state, top_products_loading: true };
@@ -47,8 +34,27 @@ const product_reducer = (state: ProductState, action: Action) => {
         top_products_error: true,
       };
     case GET_PRODUCTS_SUCCESS:
+      let categories = action.payload.data.data.map(
+        (product: Product_interface) => {
+          return product.category;
+        }
+      );
+      let uniqueCategories = new Set(categories);
+      let array = Array.from(uniqueCategories);
+      categories = ["All", ...array];
+
+      let brands = action.payload.data.data.map(
+        (product: Product_interface) => {
+          return product.brand;
+        }
+      );
+      let uniqueBrands = new Set(brands);
+      let brandArray = Array.from(uniqueBrands);
+      brands = ["All", ...brandArray];
       return {
         ...state,
+        category: categories,
+        brands: brands,
         products_loading: false,
         products: action.payload.data.data,
       };
@@ -64,7 +70,7 @@ const product_reducer = (state: ProductState, action: Action) => {
       return {
         ...state,
         single_product_loading: false,
-        single_product: action.payload,
+        single_product: action.payload.data.data,
       };
     case GET_SINGLE_PRODUCT_ERROR:
       return {

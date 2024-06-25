@@ -1,36 +1,12 @@
 "use client";
-import { useState } from "react";
-import RangeSlider from "./slider";
+
 import MultiRangeSlider from "./slider";
 import CheckList from "./checkList";
 import { useCardContext } from "@/context/cardContext";
-
-interface Category {
-  id: number;
-  name: string;
-}
-
-const data = [
-  {
-    id: 1,
-    name: "Electronics",
-  },
-  {
-    id: 2,
-    name: "Clothing",
-  },
-  {
-    id: 3,
-    name: "Shoes",
-  },
-  {
-    id: 4,
-    name: "Books",
-  },
-];
+import { useProductContext } from "@/context/productContext";
 
 const Filter = () => {
-  const [category, setCategory] = useState<Category[]>(data);
+  const { category } = useProductContext();
   // const {} = useCardContext()
   return (
     <div className="flex flex-col justify-between space-y-11  w-fit backdrop-blur-sm">
@@ -47,8 +23,8 @@ const Filter = () => {
         </div>
         {category.map((element) => {
           return (
-            <div key={element.id} className="text-sm">
-              {element.name}
+            <div key={element} className="text-sm">
+              {element}
             </div>
           );
         })}
@@ -69,8 +45,13 @@ const Filter = () => {
           }
         />
       </div>
-      <div className="bg-blue-700 p-1 rounded-lg border-2 border-white hover:bg-blue-700 hover:border-blue-500 border-solid">
-        <button className="w-full">GO</button>
+      <div className="space-y-2">
+        <button className="w-full bg-blue-700 p-1 rounded-lg border-2 border-white hover:bg-blue-700 hover:border-blue-500 border-solid">
+          GO
+        </button>
+        <button className="w-full bg-blue-700 p-1 rounded-lg border-2 border-white hover:bg-blue-700 hover:border-blue-500 border-solid">
+          Clear Filter
+        </button>
       </div>
     </div>
   );

@@ -4,10 +4,16 @@ import {
   CLEAR_CART,
   TOGGLE_CART_ITEM_AMOUNT,
   COUNT_CART_TOTALS,
+  CARTLOAD,
 } from "../utils/actions";
 
+interface CartInterface {
+  id: string;
+  quantity: number;
+  product: object;
+}
 interface CardState {
-  cart: any;
+  cart: [] | CartInterface[];
   total_items: number;
   total_amount: number;
   shipping_fee: number;
@@ -93,6 +99,8 @@ const card_reducer = (state: CardState, action: Action) => {
         }
       );
       return { ...state, total_items, total_amount };
+    case CARTLOAD:
+      return { ...state, cart: action.payload };
     default:
       return state;
   }

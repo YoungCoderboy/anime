@@ -1,9 +1,9 @@
+import { useProductContext } from "@/context/productContext";
 import React, { useState } from "react";
 
 const CheckList: React.FC = () => {
   const [checkedBrands, setCheckedBrands] = useState<string[]>([]);
-
-  const brands = ["Brand 1", "Brand 2", "Brand 3", "Brand 4"];
+  const { brands } = useProductContext();
 
   const handleCheckChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, checked } = event.target;

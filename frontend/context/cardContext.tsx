@@ -8,39 +8,35 @@ import {
   CLEAR_CART,
   TOGGLE_CART_ITEM_AMOUNT,
   COUNT_CART_TOTALS,
+  CARTLOAD,
 } from "../utils/actions";
 
 import card_reducer from "@/reducers/cardReducer";
-
-const getLocalStorage = () => {
-  let cart = localStorage.getItem("cart");
-  if (cart) {
-    return JSON.parse(cart);
-  } else {
-    return [];
-  }
-};
-
+interface CartInterface {
+  id: string;
+  quantity: number;
+  product: object;
+}
 const initialState: {
-  cart: [];
+  cart: [] | CartInterface[];
   total_items: number;
   total_amount: number;
   shipping_fee: number;
 } = {
-  cart: getLocalStorage(),
+  cart: [],
   total_items: 0,
   total_amount: 0,
   shipping_fee: 50000, // fee is in paisa
 };
 
 interface CardContextType {
-  cart: [];
+  cart: [] | CartInterface[];
   total_items: number;
   total_amount: number;
   shipping_fee: number;
-  addToCart: (id: number, product: object) => void;
-  removeFromCart: (id: number) => void;
-  toggleAmount: (id: number, value: string) => void;
+  addToCart: (id: string, product: object) => void;
+  removeFromCart: (id: string) => void;
+  toggleAmount: (id: string, value: string) => void;
   clearCart: () => void;
 }
 
@@ -48,19 +44,26 @@ const CardContext = createContext({} as CardContextType);
 
 export const CardProvider = ({ children }: { children: React.ReactNode }) => {
   const [state, dispatch] = useReducer(card_reducer, initialState);
+  useEffect(() => {
+    if (localStorage.getItem("cart") === null) {
+      localStorage.setItem("cart", JSON.stringify([]));
+    }
+    const cart = JSON.parse(localStorage.getItem("cart") || "[]");
+    dispatch({ type: CARTLOAD, payload: cart });
+  }, []);
 
-  const addToCart = (id: number, product: object, quantity: number = 1) => {
+  const addToCart = (id: string, product: object, quantity: number = 1) => {
     dispatch({
       type: ADD_TO_CART,
       payload: { id, quantity, product },
     });
   };
 
-  const removeFromCart = (id: number) => {
+  const removeFromCart = (id: string) => {
     dispatch({ type: REMOVE_FROM_CART, payload: id });
   };
 
-  const toggleAmount = (id: number, value: string) => {
+  const toggleAmount = (id: string, value: string) => {
     dispatch({ type: TOGGLE_CART_ITEM_AMOUNT, payload: { id, value } });
   };
 
@@ -69,6 +72,9 @@ export const CardProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   useEffect(() => {
+    if (state.cart.length < 1) {
+      return;
+    }
     localStorage.setItem("cart", JSON.stringify(state.cart));
     dispatch({ type: COUNT_CART_TOTALS });
   }, [state.cart]);

@@ -1,8 +1,19 @@
+"use client";
 import Image from "next/image";
 import { Dancing_Script } from "next/font/google";
+import { Suspense, lazy } from "react";
+import { useProductContext } from "@/context/productContext";
+// const TopProducts = lazy(() => import("@/components/top-products"));
 import TopProducts from "@/components/top-products";
 const font = Dancing_Script({ subsets: ["latin"] });
-const page = () => {
+const Page = () => {
+  const { products_loading, top_products_loading, top_products_error } =
+    useProductContext();
+  if (products_loading || top_products_loading) {
+    return <div>Loading...</div>;
+  }
+  console.log(products_loading);
+
   return (
     <div>
       <div>
@@ -14,24 +25,30 @@ const page = () => {
             </p>
           </div>
           <div className="hidden md:block">
-            <Image
-              src="/images/onepiece.png"
-              alt="apple"
-              // className="hidden md:block"
-              width="500"
-              height="500"
-            />
+            <Suspense fallback={<div>Loading...</div>}>
+              <Image
+                src="/images/onepiece.png"
+                alt="apple"
+                // classNam e="hidden md:block"
+                width="500"
+                height="500"
+              />
+            </Suspense>
           </div>
         </div>
         <div className="flex flex-row space-x-5 items-center justify-between align-center pt-10 p-10">
           <div className="hidden md:block">
-            <Image
-              src="/images/onepiece2.png"
-              alt="apple"
-              // classNam e="hidden md:block"
-              width="500"
-              height="500"
-            />
+            <Suspense
+              fallback={<div className="bg-black text-white">Loading...</div>}
+            >
+              <Image
+                src="/images/onepiece2.png"
+                alt="apple"
+                // classNam e="hidden md:block"
+                width="500"
+                height="500"
+              />
+            </Suspense>
           </div>
           <div className="flex flex-col items-center justify-center">
             <h1 className={`${font.className} text-5xl`}>
@@ -43,9 +60,15 @@ const page = () => {
           </div>
         </div>
       </div>
-      <TopProducts />
+      {top_products_loading ? (
+        <h1>Loading...</h1>
+      ) : top_products_error ? (
+        <h1>Error</h1>
+      ) : (
+        <TopProducts />
+      )}
     </div>
   );
 };
 
-export default page;
+export default Page;

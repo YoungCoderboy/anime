@@ -17,6 +17,15 @@ const TopProducts = () => {
     }
   };
   const [show, setShow] = useState(false);
+  const [showPage, setShowPage] = useState(false);
+  setTimeout(() => {
+    setShowPage(true);
+  }, 1000);
+
+  if (!showPage) {
+    return <div>Loading..</div>;
+  }
+
   return (
     <div
       className="m-5  p-3 rounded-xl space-y-7 "

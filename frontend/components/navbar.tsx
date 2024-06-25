@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaBell } from "react-icons/fa6";
 import { usePathname } from "next/navigation";
 import { PiUserCirclePlusThin } from "react-icons/pi";
@@ -9,12 +9,18 @@ import { ImFire } from "react-icons/im";
 import { IoBagHandle } from "react-icons/io5";
 import { NAV_LINKS } from "@/utils/constants";
 import { useSiteContext } from "@/context/siteContext";
+import { useCardContext } from "@/context/cardContext";
 const NavBar = () => {
   const { handleMenuClick, showUserMenu, handleSidebarClick, showSidebar } =
     useSiteContext();
+  const { cart } = useCardContext();
   const pathname = usePathname();
-  const [cnt, setCnt] = useState(0);
+  const [cnt, setCnt] = useState(cart.length);
   const links = NAV_LINKS;
+
+  useEffect(() => {
+    setCnt(cart.length);
+  }, [cart]);
 
   return (
     <nav className="bg-[#070F2B]">
