@@ -41,6 +41,7 @@ const productSchema = new mongoose.Schema(
 
     priceDiscount: {
       type: Number,
+      default: 0,
       validate: {
         validator: function (val) {
           return val < this.price;
@@ -50,8 +51,16 @@ const productSchema = new mongoose.Schema(
     },
     imageCover: {
       type: String,
+      default: "/images/products/default.png",
     },
-    images: [String],
+    images: {
+      type: [String],
+      default: [
+        "/images/products/default1.png",
+        "/images/products/default2.png",
+        "/images/products/default3.png",
+      ],
+    },
     brand: {
       type: String,
       required: [true, "Please provide product brand"],

@@ -8,19 +8,19 @@ const Card = ({ product }: { product: Product_interface }) => {
   const { addToCart, cart = [] } = useCardContext();
 
   const alreadyInCart = cart.find((item) => item.id === product.id);
-  console.log(alreadyInCart);
+
   const handleProductClick = () => {
-    console.log("Product clicked");
     router.push(`/products/${product.id}`);
   };
+  console.log("product", product);
   return (
     <div className="border-2 border-white border-solid rounded-lg p-6 bg-slate-950 flex flex-col justify-between items-center min-w-72 min-h-96 space-y-6">
       <div
         onClick={handleProductClick}
-        className="cursor-pointer hover:border-green-500   border-white border-solid border-2 max-w-48 min-h-72 p-5 items-center flex rounded-xl bg-gray-900"
+        className="cursor-pointer hover:border-green-500   border-white border-solid border-2 max-w-60 min-h-72 p-2 items-center flex rounded-xl bg-gray-900"
       >
-        <Image
-          src={"/images/onepiece.png"}
+        <img
+          src={product.imageCover}
           alt={product.name}
           width="200"
           height="200"

@@ -10,6 +10,7 @@ const {
   getAll,
   findOne,
 } = require("./handleFactory");
+const { uploadImage } = require("./../utils/cloudinaryUtil");
 
 const multerStorage = multer.memoryStorage();
 const multerFilter = (req, file, cb) => {
@@ -35,28 +36,27 @@ exports.resizeProductImages = catchAsync(async (req, res, next) => {
   if (!req.files.imageCover || !req.files.images) return next();
 
   // 1) Process cover image
-  const imageCoverFilename = `product-${
-    req.params.id
-  }-${Date.now()}-cover.jpeg`;
-  await sharp(req.files.imageCover[0].buffer)
+  const imageCoverFilename = `product-${req.params.id}-${Date.now()}-cover`;
+  const img_buffer = await sharp(req.files.imageCover[0].buffer)
     .resize(2000, 1333)
-    .toFormat("jpeg")
-    .jpeg({ quality: 90 })
-    .toFile(`public/img/products/${imageCoverFilename}`);
-
-  req.body.imageCover = imageCoverFilename;
+    .toFormat("png")
+    .png({ quality: 100 })
+    .toBuffer();
+  const uploadResult = await uploadImage(img_buffer, imageCoverFilename);
+  req.body.imageCover = uploadResult.url;
 
   req.body.images = [];
   // 2) Process other images
   await Promise.all(
     req.files.images.map(async (file, i) => {
-      const filename = `product-${req.params.id}-${Date.now()}-${i + 1}.jpeg`;
-      await sharp(file.buffer)
+      const filename = `product-${req.params.id}-${Date.now()}-${i + 1}`;
+      const buffer = await sharp(file.buffer)
         .resize(2000, 1333)
-        .toFormat("jpeg")
-        .jpeg({ quality: 90 })
-        .toFile(`public/img/products/${filename}`);
-      req.body.images.push(filename);
+        .toFormat("png")
+        .png({ quality: 100 })
+        .toBuffer();
+      const uploadResult = await uploadImage(buffer, filename);
+      req.body.images.push(uploadResult.url);
     })
   );
   next();
@@ -65,7 +65,7 @@ exports.resizeProductImages = catchAsync(async (req, res, next) => {
 exports.aliasTopProducts = (req, res, next) => {
   req.query.limit = "5";
   req.query.sort = "ratingsAverage,-price";
-  req.query.fields = "name,price,ratingsAverage,description";
+  req.query.fields = "name,price,ratingsAverage,description imageCover";
   next();
 };
 

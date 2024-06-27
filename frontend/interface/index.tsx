@@ -1,4 +1,34 @@
 import { ObjectId } from "mongoose";
+
+export interface User_interface {
+  id: string;
+  name: string;
+  email: string;
+  photo: string;
+}
+
+export interface TopProducts_interface {
+  id: string;
+  name: string;
+  price: number;
+  imageCover: string;
+  ratingsAverage: number;
+}
+export interface Review_interface {
+  id: string;
+  review: string;
+  comment: string;
+  rating: number;
+  userRef: User_interface;
+  product: string;
+}
+
+export interface seller {
+  id: string;
+  name: string;
+  email: string;
+  photo: string;
+}
 export interface Product_interface {
   id: string;
   name: string;
@@ -11,9 +41,10 @@ export interface Product_interface {
   priceDiscount?: number;
   imageCover?: string;
   images: string[];
+  reviews: [] | Review_interface[];
   brand: string;
   category: string;
-  sellers: ObjectId | string;
+  sellers: {} | seller;
   secretProduct: boolean;
 }
 
@@ -51,7 +82,7 @@ export interface ProductState_interface {
 export interface CartInterface {
   id: string;
   name: string;
-  image: string;
+  imageCover: string;
   price: number;
   discount: number;
   quantity: number;

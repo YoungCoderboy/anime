@@ -1,8 +1,8 @@
+"use client";
 import Image from "next/image";
-import TableRow from "./table-row";
 import { useCardContext } from "@/context/cardContext";
-import { FaRemoveFormat } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
+import Link from "next/link";
 
 const CartTable = () => {
   const {
@@ -12,6 +12,7 @@ const CartTable = () => {
     shipping_fee,
     toggleAmount,
     removeFromCart,
+    clearCart,
   } = useCardContext();
   return (
     <div className="w-full p-2">
@@ -29,8 +30,8 @@ const CartTable = () => {
             <>
               <div key={item.id}>
                 <div className="flex justify-center">
-                  <Image
-                    src={"/images/onepiece.png"}
+                  <img
+                    src={item.imageCover}
                     width={100}
                     height={50}
                     alt="productimg"
@@ -87,9 +88,20 @@ const CartTable = () => {
           );
         })}
       </div>
+      <div className="w-full flex flex-row justify-between p-5">
+        <Link href={"/shop"} className="bg-blue-800 p-2 rounded-md">
+          Continue Shopping
+        </Link>
+        <button
+          onClick={() => clearCart()}
+          className="bg-remove p-2 rounded-md"
+        >
+          Clear Cart
+        </button>
+      </div>
       <div className="flex flex-col xl:items-end items-center">
         <div className="border-2 border-white w-fit p-5 rounded-xl mt-5 grid grid-cols-2 gap-4 ">
-          <p>Total Number of Items :</p> <p> ₹{total_items}</p>
+          <p>Total Number of Items :</p> <p> {total_items}</p>
           <p>Shipping fees : </p> <p>₹{shipping_fee / 100}</p>
           <p>Total Amount : </p> <p>₹{(total_amount + shipping_fee) / 100}</p>
         </div>

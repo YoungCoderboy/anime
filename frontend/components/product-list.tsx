@@ -8,9 +8,9 @@ const ListCard = ({ product }: { product: Product_interface }) => {
   const alreadyInCart = cart.find((item) => item.id === product.id);
   return (
     <div className="flex flex-row border-2 border-solid border-white rounded-lg items-center p-4">
-      <div className="border-2 border-solid border-blue-200 min-w-32 min-h-40 rounded-lg max-w-52">
-        <Image
-          src={"/images/jjk.png"}
+      <div className="border-2 border-solid border-blue-200 min-w-32 min-h-40 rounded-lg max-w-52 p-2">
+        <img
+          src={product.imageCover}
           alt="apple"
           width="400"
           height="300"

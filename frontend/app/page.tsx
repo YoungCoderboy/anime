@@ -12,7 +12,6 @@ const Page = () => {
   if (products_loading || top_products_loading) {
     return <div>Loading...</div>;
   }
-  console.log(products_loading);
 
   return (
     <div>

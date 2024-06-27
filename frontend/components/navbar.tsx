@@ -10,6 +10,7 @@ import { IoBagHandle } from "react-icons/io5";
 import { NAV_LINKS } from "@/utils/constants";
 import { useSiteContext } from "@/context/siteContext";
 import { useCardContext } from "@/context/cardContext";
+import Link from "next/link";
 const NavBar = () => {
   const { handleMenuClick, showUserMenu, handleSidebarClick, showSidebar } =
     useSiteContext();
@@ -107,17 +108,17 @@ const NavBar = () => {
           </div>
           <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0 space-x-3">
             <div className="p-1 relative">
-              <button
-                type="button"
+              <Link
+                href="/cart"
                 className="relative rounded-full bg-gray-900 pr-0 text-gray-200 "
               >
                 <span className="absolute -inset-1.5" />
                 <span className="sr-only">View Cart</span>
                 <IoBagHandle className="text-xl" />
-              </button>
-              <span className="absolute top-0 right-0 text-xs align-top  size-0.5 pl-1">
+              </Link>
+              <p className="absolute top-0 right-0 text-xs align-top  size-0.5 pl-1 text-green-400">
                 {cnt}
-              </span>
+              </p>
             </div>
             <div className="p-1">
               <button
@@ -143,7 +144,12 @@ const NavBar = () => {
                 >
                   <span className="absolute -inset-1.5" />
                   <span className="sr-only">Open user menu</span>
-                  <PiUserCirclePlusThin className="text-3xl text-gray-300" />
+                  <img
+                    src={"/images/users/default.png"}
+                    width={35}
+                    className="rounded-full border-2 border-black"
+                    title="user profile"
+                  />
                 </button>
               </div>
               {/*

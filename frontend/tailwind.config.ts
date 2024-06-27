@@ -1,3 +1,4 @@
+import { link } from "fs";
 import type { Config } from "tailwindcss";
 
 const config: Config = {
@@ -19,6 +20,8 @@ const config: Config = {
         stock: "#4B9D71",
         outStock: "#DC2626",
         incdec: "#164e63",
+        link: "#3B82F6",
+        remove: "#EF4444",
       },
     },
   },

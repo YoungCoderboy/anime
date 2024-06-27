@@ -47,7 +47,7 @@ reviewSchema.pre(/^find/, function (next) {
   //   });
   this.populate({
     path: "userRef",
-    select: "name photo",
+    select: "name photo email",
   });
   next();
 });

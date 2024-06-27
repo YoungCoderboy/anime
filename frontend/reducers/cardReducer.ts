@@ -26,6 +26,7 @@ const card_reducer = (state: CardState, action: Action) => {
       const { id, quantity, product } = action.payload;
       const tempItem = state.cart.find((item: any) => item.id === id);
       if (tempItem) {
+        // if item is already in the cart then we need to update the quantity
         const tempCart = state.cart.map((cartItem: any) => {
           if (cartItem.id === id) {
             let newAmount = cartItem.quantity + 1;
@@ -43,7 +44,7 @@ const card_reducer = (state: CardState, action: Action) => {
           id,
           name: product.name,
           price: product.price,
-          image: product.imageCover,
+          imageCover: product.imageCover,
           discount: product.priceDiscount,
           quantity,
           max: product.stock,
@@ -55,8 +56,10 @@ const card_reducer = (state: CardState, action: Action) => {
       const tempCart = state.cart.filter(
         (item: any) => item.id !== action.payload
       );
+
       return { ...state, cart: tempCart };
     case CLEAR_CART:
+      localStorage.setItem("cart", "[]");
       return { ...state, cart: [] };
     case TOGGLE_CART_ITEM_AMOUNT:
       const { id: toggleId, value } = action.payload;

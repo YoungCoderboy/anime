@@ -26,9 +26,6 @@ const CardContext = createContext({} as CardContextType);
 export const CardProvider = ({ children }: { children: React.ReactNode }) => {
   const [state, dispatch] = useReducer(card_reducer, initialState);
   useEffect(() => {
-    if (localStorage.getItem("cart") === null) {
-      localStorage.setItem("cart", JSON.stringify([]));
-    }
     const cart = JSON.parse(localStorage.getItem("cart") || "[]");
     dispatch({ type: CARTLOAD, payload: cart });
   }, []);
@@ -53,7 +50,7 @@ export const CardProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   useEffect(() => {
-    if (state.cart.length < 1) {
+    if (state.cart.length == 0) {
       return;
     }
     localStorage.setItem("cart", JSON.stringify(state.cart));
