@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const slugify = require("slugify");
+const { trim } = require("validator");
 
 const productSchema = new mongoose.Schema(
   {
@@ -9,6 +10,8 @@ const productSchema = new mongoose.Schema(
       unique: [true, "This Product name is already taken"],
       trim: true,
       maxLength: [100, "Product name cannot exceed 100 characters"],
+      trim: true,
+      set: (value) => value.toLowerCase(),
       required: [true, "Please provide product name"],
     },
     slug: String,
@@ -31,11 +34,13 @@ const productSchema = new mongoose.Schema(
     price: {
       // price should store in paise
       type: Number,
-      required: true,
+      required: [true, "Product Should have price"],
       default: 0,
     },
     description: {
       type: String,
+      trim: true,
+      maxLength: [1000, "Product description cannot exceed 1000 characters"],
       required: [true, "Please provide product description"],
     },
 
@@ -63,10 +68,14 @@ const productSchema = new mongoose.Schema(
     },
     brand: {
       type: String,
+      trim: true,
+      set: (value) => value.toLowerCase(),
       required: [true, "Please provide product brand"],
     },
     category: {
       type: String,
+      trim: true,
+      set: (value) => value.toLowerCase(),
       required: [true, "Please provide product category"],
     },
     sellers: {

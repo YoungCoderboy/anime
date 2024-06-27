@@ -1,12 +1,14 @@
 const crypto = require("crypto");
 const mongoose = require("mongoose");
 const validator = require("validator");
+const { trim } = require("validator");
 const bcrypt = require("bcryptjs");
 
 const userSchema = new mongoose.Schema(
   {
     name: {
       type: String,
+      trim: true,
       required: [true, "Please tell us your name!"],
     },
     email: {
@@ -42,11 +44,6 @@ const userSchema = new mongoose.Schema(
         message: "Passwords are not the same!",
       },
     },
-    passwordChangedAt: Date,
-    passwordResetToken: String,
-    passwordResetExpires: Date,
-    verificationToken: String,
-    verificationTokenExpires: Date,
     verified: {
       type: Boolean,
       default: false,
@@ -56,6 +53,11 @@ const userSchema = new mongoose.Schema(
       default: true,
       select: false,
     },
+    passwordChangedAt: Date,
+    passwordResetToken: String,
+    passwordResetExpires: Date,
+    verificationToken: String,
+    verificationTokenExpires: Date,
   },
   {
     toJSON: { virtuals: true },
@@ -76,7 +78,7 @@ userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) return next();
 
   // Hash the password with cost of 12
-  this.password = await bcrypt.hash(this.password, 14);
+  this.password = await bcrypt.hash(this.password, 13);
 
   // Delete passwordConfirm field
   this.passwordConfirm = undefined;
