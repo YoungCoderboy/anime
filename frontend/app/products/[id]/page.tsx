@@ -7,6 +7,8 @@ import { useCardContext } from "@/context/cardContext";
 import AddCartBtn from "@/components/addtocart-btn";
 import Reviews from "@/components/reviews";
 import Link from "next/link";
+import { Poppins } from "next/font/google";
+const font = Poppins({ weight: "500", subsets: ["latin"] });
 
 export default function Page({ params }: { params: { id: string } }) {
   const { cart, toggleAmount } = useCardContext();
@@ -87,7 +89,11 @@ export default function Page({ params }: { params: { id: string } }) {
           {/* Information */}
 
           <div>
-            <h1 className="text-4xl font-semibold">{single_product.name}</h1>
+            <h1
+              className={`text-4xl font-semibold capitalize ${font.className}`}
+            >
+              {single_product.name}
+            </h1>
           </div>
           <div>
             <p className="sm:text-lg text-sm">{single_product.description}</p>
@@ -111,7 +117,7 @@ export default function Page({ params }: { params: { id: string } }) {
             {single_product.priceDiscount &&
               single_product.priceDiscount > 0 && (
                 <span className="text-discount">
-                  -{" "}
+                  -
                   {(
                     (single_product.priceDiscount / single_product.price) *
                     100

@@ -40,6 +40,9 @@ const card_reducer = (state: CardState, action: Action) => {
         });
         return { ...state, cart: tempCart };
       } else {
+        if (quantity > product.stock) {
+          return { ...state };
+        }
         const newItem = {
           id,
           name: product.name,

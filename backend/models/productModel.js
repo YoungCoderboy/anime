@@ -7,10 +7,8 @@ const productSchema = new mongoose.Schema(
     name: {
       type: String,
       required: true,
-      unique: [true, "This Product name is already taken"],
-      trim: true,
+      unique: true,
       maxLength: [100, "Product name cannot exceed 100 characters"],
-      trim: true,
       set: (value) => value.toLowerCase(),
       required: [true, "Please provide product name"],
     },
