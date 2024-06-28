@@ -52,6 +52,8 @@ export interface ProductContextType_interface {
   top_products: [] | Product_interface[];
   top_products_loading: boolean;
   top_products_error: boolean;
+  max_price: number;
+  min_price: number;
   products: [] | Product_interface[];
   category: string[];
   brands: string[];
@@ -70,6 +72,8 @@ export interface ProductState_interface {
   products: [] | Product_interface[];
   top_products_loading: boolean;
   top_products_error: boolean;
+  max_price: number;
+  min_price: number;
   products_loading: boolean;
   products_error: boolean;
   category: string[];

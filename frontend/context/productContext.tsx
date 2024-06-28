@@ -23,6 +23,8 @@ const initialState = {
   top_products_loading: false,
   top_products_error: false,
   products: [],
+  max_price: 0,
+  min_price: 0,
   brands: [],
   category: [],
   products_loading: false,
@@ -59,7 +61,7 @@ export const ProductProvider = ({
   const fetchProducts = async () => {
     dispatch({ type: GET_PRODUCTS_BEGIN });
     try {
-      const response = await axios.get(`${url}/products`);
+      const response = await axios.get(`${url}/products?stock[gte]=1`);
       const products = response.data;
 
       dispatch({ type: GET_PRODUCTS_SUCCESS, payload: products });

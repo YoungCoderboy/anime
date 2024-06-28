@@ -41,7 +41,7 @@ const product_reducer = (
       );
       let uniqueCategories = new Set(categories);
       let array = Array.from(uniqueCategories);
-      categories = ["All", ...array];
+      categories = [...array];
 
       let brands = action.payload.data.data.map(
         (product: Product_interface) => {
@@ -50,11 +50,20 @@ const product_reducer = (
       );
       let uniqueBrands = new Set(brands);
       let brandArray = Array.from(uniqueBrands);
-      brands = ["All", ...brandArray];
+      brands = [...brandArray];
+      const prices = action.payload.data.data.map(
+        (product: Product_interface) => {
+          return product.price;
+        }
+      );
+      const max_price = Math.max(...prices);
+      const min_price = Math.min(...prices);
       return {
         ...state,
         category: categories,
         brands: brands,
+        min_price: min_price,
+        max_price: max_price,
         products_loading: false,
         products: action.payload.data.data,
       };

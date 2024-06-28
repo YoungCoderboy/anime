@@ -1,8 +1,13 @@
 import { useProductContext } from "@/context/productContext";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
-const CheckList: React.FC = () => {
-  const [checkedBrands, setCheckedBrands] = useState<string[]>([]);
+const CheckList = ({
+  checkedBrands,
+  setCheckedBrands,
+}: {
+  checkedBrands: string[];
+  setCheckedBrands: React.Dispatch<React.SetStateAction<string[]>>;
+}) => {
   const { brands } = useProductContext();
 
   const handleCheckChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -17,7 +22,12 @@ const CheckList: React.FC = () => {
       {brands.map((brand) => (
         <div key={brand}>
           <label>
-            <input type="checkbox" name={brand} onChange={handleCheckChange} />
+            <input
+              type="checkbox"
+              name={brand}
+              onChange={handleCheckChange}
+              checked={checkedBrands.includes(brand)}
+            />
             {brand}
           </label>
         </div>

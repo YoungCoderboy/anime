@@ -115,24 +115,28 @@ export default function Page({ params }: { params: { id: string } }) {
               M.R.P: ₹ {single_product.price / 100}
             </p>
             {single_product.priceDiscount &&
-              single_product.priceDiscount > 0 && (
-                <span className="text-discount">
-                  -
-                  {(
-                    (single_product.priceDiscount / single_product.price) *
-                    100
-                  ).toFixed(2)}
-                  % off
-                </span>
-              )}
+            single_product.priceDiscount > 0 ? (
+              <span className="text-discount">
+                -
+                {(
+                  (single_product.priceDiscount / single_product.price) *
+                  100
+                ).toFixed(2)}
+                % off
+              </span>
+            ) : (
+              ""
+            )}
 
-            {single_product.priceDiscount &&
-              single_product.priceDiscount > 0 && (
-                <p className="text-price">
-                  Price: ₹{" "}
-                  {(single_product.price - single_product.priceDiscount) / 100}
-                </p>
-              )}
+            {single_product.priceDiscount
+              ? single_product.priceDiscount > 0 && (
+                  <p className="text-price">
+                    Price: ₹{" "}
+                    {(single_product.price - single_product.priceDiscount) /
+                      100}
+                  </p>
+                )
+              : ""}
           </div>
           {/* <div>
           <p className="text-discount">
@@ -152,6 +156,10 @@ export default function Page({ params }: { params: { id: string } }) {
           <div className="flex flex-row space-x-1">
             <span className="font-bold">Brand:</span>
             <p className="font-thin">{single_product.brand}</p>
+          </div>
+          <div className="flex flex-row space-x-1">
+            <span className="font-bold">Category:</span>
+            <p className="font-thin">{single_product.category}</p>
           </div>
 
           <hr />

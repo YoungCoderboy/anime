@@ -89,7 +89,7 @@ const CartTable = () => {
         })}
       </div>
       <div className="w-full flex flex-row justify-between p-5">
-        <Link href={"/shop"} className="bg-blue-800 p-2 rounded-md">
+        <Link href={"/store"} className="bg-blue-800 p-2 rounded-md">
           Continue Shopping
         </Link>
         <button
