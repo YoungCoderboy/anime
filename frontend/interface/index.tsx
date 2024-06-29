@@ -67,11 +67,13 @@ export interface ProductContextType_interface {
   single_product_loading: boolean;
   single_product_error: boolean;
   single_product: Product_interface;
+  sort: string;
   fetchProducts: () => void;
   fetchSingleProduct: (id: string) => void;
   getTopProducts: () => void;
   changeUrl: (url: string) => void;
   toggleOutOfStock: () => void;
+  setSort: (sort: string) => void;
 }
 
 export interface ProductState_interface {
@@ -93,6 +95,7 @@ export interface ProductState_interface {
   single_product_loading: boolean;
   single_product_error: boolean;
   single_product: Product_interface;
+  sort: string;
 }
 
 export interface CartInterface {

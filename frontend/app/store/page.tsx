@@ -5,6 +5,7 @@ import Products from "@/components/products";
 import { FaFilter } from "react-icons/fa";
 import classNames from "classnames";
 import { CiGrid41, CiViewList } from "react-icons/ci";
+import Sort from "@/components/sort";
 
 const Page = () => {
   const [isFilterVisible, setFilterVisible] = useState(false);
@@ -40,7 +41,7 @@ const Page = () => {
           />
         </div>
         <div className="bg-white w-full h-0.5"></div>
-        <h1>sort</h1>
+        <Sort />
       </div>
       <div className="flex flex-row justify-between">
         <div

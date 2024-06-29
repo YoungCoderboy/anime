@@ -8,6 +8,7 @@ import { ProductContextType_interface, Product_interface } from "@/interface";
 
 import {
   ALLOW_OUT_OF_STOCK,
+  CHANGE_SORT,
   CHANGE_URL,
   GET_FILTERED_PRODUCTS_BEGIN,
   GET_FILTERED_PRODUCTS_ERROR,
@@ -24,24 +25,25 @@ import {
 } from "@/utils/actions";
 
 const initialState = {
+  products: [],
   top_products: [],
   filter_products: [],
-  filter_products_loading: false,
-  filter_products_error: false,
   top_products_loading: false,
   top_products_error: false,
-  products: [],
-  filter_string: "",
-  max_price: 0,
-  min_price: 0,
-  outOfStock: false,
-  brands: [],
-  category: [],
+  filter_products_loading: false,
+  filter_products_error: false,
   products_loading: false,
+  filter_string: "",
   products_error: false,
   single_product_loading: false,
   single_product_error: false,
+  outOfStock: false,
+  max_price: 0,
+  min_price: 0,
+  brands: [],
+  category: [],
   single_product: {},
+  sort: "name",
 };
 export interface Action_interface {
   type: string;
@@ -75,7 +77,9 @@ export const ProductProvider = ({
         url +
           "/products?" +
           `${state.outOfStock ? "stock[gte]=0" : "stock[gte]=1"}` +
-          state.filter_string
+          state.filter_string +
+          "&sort=" +
+          state.sort
       );
       const products = response.data;
 
@@ -94,6 +98,10 @@ export const ProductProvider = ({
     } catch (error) {
       dispatch({ type: GET_PRODUCTS_ERROR });
     }
+  };
+
+  const setSort = (sort: string) => {
+    dispatch({ type: CHANGE_SORT, payload: sort });
   };
 
   const fetchSingleProduct = async (id: string) => {
@@ -123,7 +131,7 @@ export const ProductProvider = ({
 
   useEffect(() => {
     fetchFilteredProducts();
-  }, [state.filter_string, state.outOfStock]);
+  }, [state.filter_string, state.outOfStock, state.sort]);
 
   return (
     <ProductContext.Provider
@@ -134,6 +142,7 @@ export const ProductProvider = ({
         getTopProducts,
         changeUrl,
         toggleOutOfStock,
+        setSort,
       }}
     >
       {children}

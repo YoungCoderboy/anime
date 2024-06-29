@@ -12,7 +12,7 @@ const Card = ({ product }: { product: Product_interface }) => {
   const handleProductClick = () => {
     router.push(`/products/${product.id}`);
   };
-  console.log("product", product);
+  // console.log("product", product);
   return (
     <div className="border-2 border-white border-solid rounded-lg p-6 bg-slate-950 flex flex-col justify-between items-center min-w-72 min-h-96 space-y-6">
       <div
