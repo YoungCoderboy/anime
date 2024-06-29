@@ -7,13 +7,13 @@ class APIFeatures {
   filter() {
     const queryObj = { ...this.queryString };
     // we must remove special fields from query string
-    const excludedFields = ['page', 'sort', 'limit', 'fields'];
-    excludedFields.forEach(el => delete queryObj[el]);
+    const excludedFields = ["page", "sort", "limit", "fields"];
+    excludedFields.forEach((el) => delete queryObj[el]);
 
     // 1B) Advanced filtering
 
     let queryStr = JSON.stringify(queryObj);
-    queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, match => `$${match}`);
+    queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
 
     this.query = this.query.find(JSON.parse(queryStr));
 
@@ -22,11 +22,11 @@ class APIFeatures {
 
   sort() {
     if (this.queryString.sort) {
-      const sortBy = this.queryString.sort.split(',').join(' ');
+      const sortBy = this.queryString.sort.split(",").join(" ");
       this.query = this.query.sort(sortBy);
     } else {
       // default sorting
-      this.query = this.query.sort('-createdAt');
+      this.query = this.query.sort("-createdAt");
     }
 
     return this;
@@ -36,10 +36,10 @@ class APIFeatures {
     // limiting the number of fields to save bandwidth
     // we can also have select property in schema to make it invisible by default
     if (this.queryString.fields) {
-      const fields = this.queryString.fields.split(',').join(' ');
+      const fields = this.queryString.fields.split(",").join(" ");
       this.query = this.query.select(fields);
     } else {
-      this.query = this.query.select('-__v');
+      this.query = this.query.select("-__v");
     }
 
     return this;
@@ -52,6 +52,16 @@ class APIFeatures {
 
     this.query = this.query.skip(skip).limit(limit);
 
+    return this;
+  }
+  array(obj) {
+    if (this.queryString[obj]) {
+      const list = this.queryString[obj].split(",");
+      let queryObj = {};
+      queryObj[obj] = { $in: list };
+      this.query = this.query.find(queryObj);
+      delete this.queryString[obj];
+    }
     return this;
   }
 }

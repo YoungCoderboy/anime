@@ -78,7 +78,13 @@ exports.getAll = (Model) => {
       .filter()
       .sort()
       .limitFields()
-      .paginate();
+      .paginate()
+      .array("brand");
+
+    // if (req.query.brand) {
+    //   const brands = req.query.brand.split(",");
+    //   features.query.find({ brand: { $in: brands } });
+    // }
     const doc = await features.query;
 
     // SEND RESPONSE

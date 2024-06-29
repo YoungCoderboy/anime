@@ -45,7 +45,7 @@ const Filter = () => {
   }, [checkedBrands, checkedCategory, minPrice, maxPrice]);
 
   const handleCategoryClick = (category: string) => {
-    setCheckedCategory(category);
+    setCheckedCategory(category === checkedCategory ? null : category);
   };
 
   const handleClearFilter = () => {
