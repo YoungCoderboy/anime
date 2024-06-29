@@ -27,3 +27,5 @@ export const CHANGE_URL = "CHANGE_URL";
 export const ALLOW_OUT_OF_STOCK = "ALLOW_OUT_OF_STOCK";
 
 export const CHANGE_SORT = "CHANGE_SORT";
+export const CHANGE_PAGE = "CHANGE_PAGE";
+export const CHANGE_LIMIT = "CHANGE_LIMIT";

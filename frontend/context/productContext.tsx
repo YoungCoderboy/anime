@@ -8,6 +8,8 @@ import { ProductContextType_interface, Product_interface } from "@/interface";
 
 import {
   ALLOW_OUT_OF_STOCK,
+  CHANGE_LIMIT,
+  CHANGE_PAGE,
   CHANGE_SORT,
   CHANGE_URL,
   GET_FILTERED_PRODUCTS_BEGIN,
@@ -44,6 +46,8 @@ const initialState = {
   category: [],
   single_product: {},
   sort: "name",
+  page: 1,
+  limit: 10,
 };
 export interface Action_interface {
   type: string;
@@ -79,7 +83,8 @@ export const ProductProvider = ({
           `${state.outOfStock ? "stock[gte]=0" : "stock[gte]=1"}` +
           state.filter_string +
           "&sort=" +
-          state.sort
+          state.sort +
+          `&limit=${state.limit}&page=${state.page}`
       );
       const products = response.data;
 
@@ -98,6 +103,13 @@ export const ProductProvider = ({
     } catch (error) {
       dispatch({ type: GET_PRODUCTS_ERROR });
     }
+  };
+
+  const changePage = (page: number) => {
+    dispatch({ type: CHANGE_PAGE, payload: page });
+  };
+  const changeLimit = (limit: number) => {
+    dispatch({ type: CHANGE_LIMIT, payload: limit });
   };
 
   const setSort = (sort: string) => {
@@ -131,7 +143,13 @@ export const ProductProvider = ({
 
   useEffect(() => {
     fetchFilteredProducts();
-  }, [state.filter_string, state.outOfStock, state.sort]);
+  }, [
+    state.filter_string,
+    state.outOfStock,
+    state.sort,
+    state.page,
+    state.limit,
+  ]);
 
   return (
     <ProductContext.Provider
@@ -143,6 +161,8 @@ export const ProductProvider = ({
         changeUrl,
         toggleOutOfStock,
         setSort,
+        changePage,
+        changeLimit,
       }}
     >
       {children}

@@ -68,12 +68,16 @@ export interface ProductContextType_interface {
   single_product_error: boolean;
   single_product: Product_interface;
   sort: string;
+  page: number;
+  limit: number;
   fetchProducts: () => void;
   fetchSingleProduct: (id: string) => void;
   getTopProducts: () => void;
   changeUrl: (url: string) => void;
   toggleOutOfStock: () => void;
   setSort: (sort: string) => void;
+  changePage: (page: number) => void;
+  changeLimit: (limit: number) => void;
 }
 
 export interface ProductState_interface {
@@ -85,6 +89,8 @@ export interface ProductState_interface {
   filter_products_error: boolean;
   top_products_error: boolean;
   max_price: number;
+  page: number;
+  limit: number;
   filter_string: string;
   min_price: number;
   outOfStock: boolean;

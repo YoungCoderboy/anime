@@ -6,6 +6,7 @@ import { FaFilter } from "react-icons/fa";
 import classNames from "classnames";
 import { CiGrid41, CiViewList } from "react-icons/ci";
 import Sort from "@/components/sort";
+import Limiter from "@/components/page-limiter";
 
 const Page = () => {
   const [isFilterVisible, setFilterVisible] = useState(false);
@@ -40,7 +41,10 @@ const Page = () => {
             className={!isGrid ? `bg-white text-black rounded-sm ` : ""}
           />
         </div>
+
+        <Limiter />
         <div className="bg-white w-full h-0.5"></div>
+
         <Sort />
       </div>
       <div className="flex flex-row justify-between">

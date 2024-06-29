@@ -2,6 +2,8 @@ import { Action_interface } from "@/context/productContext";
 import { Product_interface, ProductState_interface } from "@/interface";
 import {
   ALLOW_OUT_OF_STOCK,
+  CHANGE_LIMIT,
+  CHANGE_PAGE,
   CHANGE_SORT,
   CHANGE_URL,
   GET_FILTERED_PRODUCTS_BEGIN,
@@ -22,6 +24,10 @@ const product_reducer = (
   action: Action_interface
 ) => {
   switch (action.type) {
+    case CHANGE_PAGE:
+      return { ...state, page: action.payload };
+    case CHANGE_LIMIT:
+      return { ...state, limit: action.payload };
     case CHANGE_SORT:
       return { ...state, sort: action.payload };
     case ALLOW_OUT_OF_STOCK:
