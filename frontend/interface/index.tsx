@@ -50,6 +50,9 @@ export interface Product_interface {
 
 export interface ProductContextType_interface {
   top_products: [] | Product_interface[];
+  filter_products: [] | Product_interface[];
+  filter_products_loading: boolean;
+  filter_products_error: boolean;
   top_products_loading: boolean;
   top_products_error: boolean;
   max_price: number;
@@ -57,6 +60,8 @@ export interface ProductContextType_interface {
   products: [] | Product_interface[];
   category: string[];
   brands: string[];
+  outOfStock: boolean;
+  filter_string: string;
   products_loading: boolean;
   products_error: boolean;
   single_product_loading: boolean;
@@ -65,15 +70,22 @@ export interface ProductContextType_interface {
   fetchProducts: () => void;
   fetchSingleProduct: (id: string) => void;
   getTopProducts: () => void;
+  changeUrl: (url: string) => void;
+  toggleOutOfStock: () => void;
 }
 
 export interface ProductState_interface {
   top_products: [] | Product_interface[];
   products: [] | Product_interface[];
+  filter_products: [] | Product_interface[];
   top_products_loading: boolean;
+  filter_products_loading: boolean;
+  filter_products_error: boolean;
   top_products_error: boolean;
   max_price: number;
+  filter_string: string;
   min_price: number;
+  outOfStock: boolean;
   products_loading: boolean;
   products_error: boolean;
   category: string[];

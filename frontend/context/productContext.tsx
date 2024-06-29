@@ -7,6 +7,11 @@ import product_reducer from "@/reducers/productReducer";
 import { ProductContextType_interface, Product_interface } from "@/interface";
 
 import {
+  ALLOW_OUT_OF_STOCK,
+  CHANGE_URL,
+  GET_FILTERED_PRODUCTS_BEGIN,
+  GET_FILTERED_PRODUCTS_ERROR,
+  GET_FILTERED_PRODUCTS_SUCCESS,
   GET_PRODUCTS_BEGIN,
   GET_PRODUCTS_ERROR,
   GET_PRODUCTS_SUCCESS,
@@ -20,11 +25,16 @@ import {
 
 const initialState = {
   top_products: [],
+  filter_products: [],
+  filter_products_loading: false,
+  filter_products_error: false,
   top_products_loading: false,
   top_products_error: false,
   products: [],
+  filter_string: "",
   max_price: 0,
   min_price: 0,
+  outOfStock: false,
   brands: [],
   category: [],
   products_loading: false,
@@ -58,10 +68,26 @@ export const ProductProvider = ({
       console.log(error);
     }
   };
+  const fetchFilteredProducts = async () => {
+    dispatch({ type: GET_FILTERED_PRODUCTS_BEGIN });
+    try {
+      const response = await axios.get(
+        url +
+          "/products?" +
+          `${state.outOfStock ? "stock[gte]=0" : "stock[gte]=1"}` +
+          state.filter_string
+      );
+      const products = response.data;
+
+      dispatch({ type: GET_FILTERED_PRODUCTS_SUCCESS, payload: products });
+    } catch (error) {
+      dispatch({ type: GET_FILTERED_PRODUCTS_ERROR });
+    }
+  };
   const fetchProducts = async () => {
     dispatch({ type: GET_PRODUCTS_BEGIN });
     try {
-      const response = await axios.get(`${url}/products?stock[gte]=1`);
+      const response = await axios.get(url + "/products");
       const products = response.data;
 
       dispatch({ type: GET_PRODUCTS_SUCCESS, payload: products });
@@ -82,14 +108,33 @@ export const ProductProvider = ({
     }
   };
 
+  const changeUrl = (url: string) => {
+    dispatch({ type: CHANGE_URL, payload: url });
+  };
+
+  const toggleOutOfStock = () => {
+    dispatch({ type: ALLOW_OUT_OF_STOCK });
+  };
+
   useEffect(() => {
     fetchProducts();
     getTopProducts();
   }, []);
 
+  useEffect(() => {
+    fetchFilteredProducts();
+  }, [state.filter_string, state.outOfStock]);
+
   return (
     <ProductContext.Provider
-      value={{ ...state, fetchSingleProduct, fetchProducts, getTopProducts }}
+      value={{
+        ...state,
+        fetchSingleProduct,
+        fetchProducts,
+        getTopProducts,
+        changeUrl,
+        toggleOutOfStock,
+      }}
     >
       {children}
     </ProductContext.Provider>

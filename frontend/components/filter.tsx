@@ -1,6 +1,5 @@
 "use client";
 
-import MultiRangeSlider from "./slider";
 import CheckList from "./checkList";
 import { useCardContext } from "@/context/cardContext";
 import { useProductContext } from "@/context/productContext";
@@ -15,7 +14,8 @@ const Filter = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const { category } = useProductContext();
+  const { category, changeUrl, outOfStock, toggleOutOfStock } =
+    useProductContext();
   // get brands and category from url
   const paramCategory = searchParams.get("category");
   const paramBrands = searchParams.getAll("brands");
@@ -25,15 +25,24 @@ const Filter = () => {
     paramCategory
   );
 
-  const [checkedPrice, setCheckedPrice] = useState<{
-    min: number;
-    max: number;
-  }>({} as { min: number; max: number });
+  const [minPrice, setMinPrice] = useState<number>(-1);
+  const [maxPrice, setMaxPrice] = useState<number>(-1);
+  const [currValue, setCurrValue] = useState<{ min: number; max: number }>({
+    min: -1,
+    max: -1,
+  });
 
   useEffect(() => {
-    const path = routeHandler(pathName, checkedCategory, [...checkedBrands]);
+    const { path, filter_string } = routeHandler(
+      pathName,
+      checkedCategory,
+      [...checkedBrands],
+      minPrice,
+      maxPrice
+    );
+    changeUrl(filter_string);
     router.push(path);
-  }, [checkedBrands, checkedCategory]);
+  }, [checkedBrands, checkedCategory, minPrice, maxPrice]);
 
   const handleCategoryClick = (category: string) => {
     setCheckedCategory(category);
@@ -42,6 +51,12 @@ const Filter = () => {
   const handleClearFilter = () => {
     setCheckedCategory(null);
     setCheckedBrands([]);
+    setMinPrice(-1);
+    setMaxPrice(-1);
+    if (outOfStock) {
+      toggleOutOfStock();
+    }
+    setCurrValue({ min: -1, max: -1 });
   };
 
   return (
@@ -82,18 +97,64 @@ const Filter = () => {
           />
         </div>
       </div>
-      <div>
+      <div className="flex flex-col">
         <h1 className="text-xl font-semibold">Price</h1>
-        <MultiRangeSlider
-          min={0}
-          max={1000}
-          onChange={({ min, max }: { min: number; max: number }) =>
-            console.log(`min = ${min}, max = ${max}`)
-          }
-        />
+        <div className="space-y-2">
+          <label htmlFor="min">Min :</label>
+          <input
+            type="number"
+            id="min"
+            value={currValue.min !== -1 ? currValue.min : ""}
+            onChange={(e) => {
+              setCurrValue({
+                ...currValue,
+                min: parseInt(e.currentTarget.value),
+              });
+            }}
+            className="bg-gray-900 rounded-lg p-1"
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                // Call your function here
+                if (e.currentTarget.value === "") return;
+                console.log("Min value entered:", e.currentTarget.value);
+                setMinPrice(parseInt(e.currentTarget.value));
+              }
+            }}
+          />
+        </div>
+        <div className="space-y-2">
+          <label htmlFor="max">Max :</label>
+          <input
+            type="number"
+            id="max"
+            value={currValue.max !== -1 ? currValue.max : ""}
+            onChange={(e) => {
+              setCurrValue({
+                ...currValue,
+                max: parseInt(e.currentTarget.value),
+              });
+            }}
+            className="rounded-lg p-1 bg-gray-900"
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                if (e.currentTarget.value === "") return;
+                // Call your function here
+                setMaxPrice(parseInt(e.currentTarget.value));
+                console.log("Min value entered:", e.currentTarget.value);
+              }
+            }}
+          />
+        </div>
       </div>
-      <div>
-        <h1 className="text-lg">Include Out of Stock</h1>
+      <div
+        onClick={toggleOutOfStock}
+        className="cursor-pointer bg-blue-700 border-2 p-2 rounded-lg text-black"
+      >
+        {!outOfStock ? (
+          <h1 className="text-lg">Include Out of Stock</h1>
+        ) : (
+          <h1 className="text-lg">Exclude Out of Stock</h1>
+        )}
       </div>
       <div className="space-y-2">
         <button

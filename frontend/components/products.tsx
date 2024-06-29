@@ -5,15 +5,26 @@ import ListCard from "./product-list";
 import { useProductContext } from "@/context/productContext";
 
 const Products = ({ grid }: { grid: boolean }) => {
-  const { products } = useProductContext();
+  const { filter_products, filter_products_loading, filter_products_error } =
+    useProductContext();
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 9;
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = products.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems = filter_products.slice(indexOfFirstItem, indexOfLastItem);
 
-  const totalPages = Math.ceil(products.length / itemsPerPage);
+  const totalPages = Math.ceil(filter_products.length / itemsPerPage);
+  // TODO: Add Loading and Error Component
+  if (filter_products_loading) return <h1>Loading...</h1>;
+  if (filter_products_error) return <h1>Error...</h1>;
+
+  if (filter_products.length === 0)
+    return (
+      <div className="flex flex-col justify-center items-center">
+        No Products Found
+      </div>
+    );
 
   const handleNext = () => {
     if (currentPage < totalPages) {

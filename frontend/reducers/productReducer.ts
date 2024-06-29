@@ -1,6 +1,10 @@
 import { Action_interface } from "@/context/productContext";
 import { Product_interface, ProductState_interface } from "@/interface";
 import {
+  ALLOW_OUT_OF_STOCK,
+  CHANGE_URL,
+  GET_FILTERED_PRODUCTS_BEGIN,
+  GET_FILTERED_PRODUCTS_SUCCESS,
   GET_PRODUCTS_BEGIN,
   GET_PRODUCTS_ERROR,
   GET_PRODUCTS_SUCCESS,
@@ -17,6 +21,10 @@ const product_reducer = (
   action: Action_interface
 ) => {
   switch (action.type) {
+    case ALLOW_OUT_OF_STOCK:
+      return { ...state, outOfStock: !state.outOfStock };
+    case CHANGE_URL:
+      return { ...state, filter_string: action.payload };
     case GET_TOP_PRODUCTS_BEGIN:
       return { ...state, top_products_loading: true };
     case GET_PRODUCTS_BEGIN:
@@ -32,6 +40,16 @@ const product_reducer = (
         ...state,
         top_products_loading: false,
         top_products_error: true,
+      };
+    case GET_FILTERED_PRODUCTS_BEGIN:
+      return { ...state, filter_products_loading: true };
+    case GET_PRODUCTS_ERROR:
+      return { ...state, products_loading: false, products_error: true };
+    case GET_FILTERED_PRODUCTS_SUCCESS:
+      return {
+        ...state,
+        filter_products: action.payload.data.data,
+        filter_products_loading: false,
       };
     case GET_PRODUCTS_SUCCESS:
       let categories = action.payload.data.data.map(

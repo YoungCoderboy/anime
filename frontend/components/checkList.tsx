@@ -20,11 +20,12 @@ const CheckList = ({
   return (
     <div>
       {brands.map((brand) => (
-        <div key={brand}>
-          <label>
+        <div key={brand} className="p-1">
+          <label className="">
             <input
               type="checkbox"
               name={brand}
+              className="mr-2"
               onChange={handleCheckChange}
               checked={checkedBrands.includes(brand)}
             />
@@ -32,7 +33,6 @@ const CheckList = ({
           </label>
         </div>
       ))}
-      <div>Checked brands: {checkedBrands.join(", ")}</div>
     </div>
   );
 };
